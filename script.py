@@ -1,32 +1,45 @@
+import json
 from opensearchpy import OpenSearch
+from opensearchpy.helpers import bulk
 
-# Conectar ao OpenSearch
-host = 'localhost'  # Endereço do servidor OpenSearch
-port = 5601          # Porta padrão
-auth = ('admin', 'MyS3cure@Password!')  # Autenticação
+# Configurações de conexão
+host = 'localhost'  # ou o endereço do seu cluster
+port = 9200         # porta padrão
+auth = ('admin', 'MyS3cure@Password!')  # se necessário
 
+# Criação do cliente
 client = OpenSearch(
     hosts=[{'host': host, 'port': port}],
     http_auth=auth,
-    use_ssl=True,  # Habilitar HTTPS
-    verify_certs=False,  # Desativa a verificação de certificados (use com cautela)
-    timeout=40
+    use_ssl=True,
+    verify_certs=False  # Para ambientes de desenvolvimento, em produção deve ser True
 )
 
-# Realizar uma consulta limitando o resultado a 1 documento
-response = client.search(
-    body={
-        "query": {
-            "match_all": {}
-        }
-    },
-    index="nome_do_indice",  # Substitua pelo nome do seu índice
-    size=1  # Limita a 1 resultado
-)
-
-# Acessar e imprimir os resultados
-if response['hits']['hits']:
-    document = response['hits']['hits'][0]  # Primeiro documento encontrado
-    print(document)
+# Verificação da conexão
+if client.ping():
+    print("Conectado ao OpenSearch!")
 else:
-    print("Nenhum documento encontrado.")
+    print("Não foi possível conectar ao OpenSearch.")
+
+
+index_name = 'contato'
+# Criação do índice, se não existir
+if not client.indices.exists(index=index_name):
+    client.indices.create(index=index_name)
+    print(f"Índice '{index_name}' criado.")
+else:
+    print(f"Índice '{index_name}' já existe.")
+
+file_path = 'data.json'
+# Lendo os dados do arquivo JSON
+with open(file_path, 'r', encoding='utf-8') as file:
+    data = json.load(file)  # Carrega os dados do JSON
+
+# Preparando os documentos para inserção
+documents = [
+    {'_index': 'contato', '_source': document} for document in data
+]
+
+# Inserindo os documentos em massa
+success, _ = bulk(client, documents)
+print(f"{success} documentos inseridos com sucesso.")

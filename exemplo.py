@@ -47,4 +47,4 @@ def filtrar_aniversarios_por_dia_mes(client, dia, mes):
         print(f"{nome} faz aniversário dia {dia}/{mes}. Mande uma mensagem para: {email}")
 
 # Exemplo de uso
-filtrar_aniversarios_por_dia_mes(client, 16, 7)
+filtrar_aniversarios_por_dia_mes(client, 20, 9)
