@@ -1,0 +1,26 @@
+[
+    {
+        "name": "Ana Souza",
+        "email": "ana.souza@email.com",
+        "phone": "(11) 99999-1234",
+        "region": "São Paulo",
+        "data_nascimento": "1990-04-15",
+        "data_cadastro": "2024-01-10T14:30:00"
+    },
+    {
+        "name": "Bruno Oliveira",
+        "email": "bruno.oliveira@email.com",
+        "phone": "(21) 98888-4321",
+        "region": "Rio de Janeiro",
+        "data_nascimento": "1985-09-20",
+        "data_cadastro": "2024-03-05T09:15:00"
+    },
+    {
+        "name": "Carla Menezes",
+        "email": "carla.menezes@email.com",
+        "phone": "(31) 97777-5678",
+        "region": "Minas Gerais",
+        "data_nascimento": "2000-12-01",
+        "data_cadastro": "2024-07-22T16:45:00"
+    }
+]
